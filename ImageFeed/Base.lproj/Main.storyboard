@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6EA-pC-8Qk">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,6 +9,26 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Tab Bar Controller-->
+        <scene sceneID="h3Q-5N-m3c">
+            <objects>
+                <tabBarController id="6EA-pC-8Qk" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="eEz-yr-K7l">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <color key="tintColor" name="YP Black"/>
+                        <color key="selectedImageTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="zfd-ga-Bjk"/>
+                        <segue destination="G7I-B8-UDr" kind="relationship" relationship="viewControllers" id="61n-m8-oCR"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MXp-mL-hQu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2528" y="180"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="C0E-nD-4Rl">
             <objects>
@@ -17,7 +37,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatarExample" translatesAutoresizingMaskIntoConstraints="NO" id="GKt-jT-6Na">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="GKt-jT-6Na">
                                 <rect key="frame" x="16" y="91" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="OpG-La-2tm"/>
@@ -42,8 +62,8 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVA-dO-i6y">
-                                <rect key="frame" x="16" y="204.66666666666666" width="97" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@name_surname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVA-dO-i6y">
+                                <rect key="frame" x="16" y="204.66666666666666" width="105" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" name="YP Gray"/>
                                 <nil key="highlightedColor"/>
@@ -70,6 +90,9 @@
                             <constraint firstItem="ZVA-dO-i6y" firstAttribute="leading" secondItem="Yvk-bQ-Vri" secondAttribute="leading" constant="16" id="wbd-DD-STi"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="person.circle.fill" catalog="system" id="OL4-gn-cRT">
+                        <color key="badgeColor" name="YP Gray"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="avatarImageView" destination="GKt-jT-6Na" id="LDf-aC-eDE"/>
                         <outlet property="descriptionLabel" destination="heg-9n-Gug" id="UON-gm-FNJ"/>
@@ -91,7 +114,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Q2I-h2-7vw">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="710"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <color key="sectionIndexBackgroundColor" name="YP Black"/>
                                 <prototypes>
@@ -155,6 +178,9 @@
                             <constraint firstItem="Q2I-h2-7vw" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qrc-pP-ekJ"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="square.stack.fill" catalog="system" id="i6X-YM-9gb">
+                        <color key="badgeColor" name="YP Gray"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="tableView" destination="Q2I-h2-7vw" id="5a6-9g-Ep0"/>
                     </connections>
@@ -167,8 +193,10 @@
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="Exit" width="24" height="24"/>
-        <image name="avatarExample" width="70" height="70"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
+        <image name="person.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="profileIcon" width="70" height="70"/>
+        <image name="square.stack.fill" catalog="system" width="105" height="128"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
