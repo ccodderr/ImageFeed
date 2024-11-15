@@ -9,6 +9,79 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Profile View Controller-->
+        <scene sceneID="C0E-nD-4Rl">
+            <objects>
+                <viewController id="G7I-B8-UDr" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="e4Z-Vr-X5f">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatarExample" translatesAutoresizingMaskIntoConstraints="NO" id="GKt-jT-6Na">
+                                <rect key="frame" x="16" y="91" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="OpG-La-2tm"/>
+                                    <constraint firstAttribute="height" constant="70" id="pGb-O0-m6S"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xo0-UL-ATi">
+                                <rect key="frame" x="345" y="114" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="8Yl-bp-bnZ"/>
+                                    <constraint firstAttribute="width" constant="24" id="SBm-Ix-DiF"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="Exit"/>
+                                <connections>
+                                    <action selector="exitButtonAction:" destination="G7I-B8-UDr" eventType="touchUpInside" id="ftU-mh-X6D"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HiC-lC-9vN">
+                                <rect key="frame" x="16" y="169" width="216.66666666666666" height="27.666666666666657"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVA-dO-i6y">
+                                <rect key="frame" x="16" y="204.66666666666666" width="97" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP Gray"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heg-9n-Gug">
+                                <rect key="frame" x="16" y="228.66666666666666" width="75.666666666666671" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Yvk-bQ-Vri"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="Yvk-bQ-Vri" firstAttribute="trailing" secondItem="Xo0-UL-ATi" secondAttribute="trailing" constant="24" id="5Ke-ZK-QRE"/>
+                            <constraint firstItem="Xo0-UL-ATi" firstAttribute="top" secondItem="Yvk-bQ-Vri" secondAttribute="top" constant="55" id="A2g-44-vf4"/>
+                            <constraint firstItem="HiC-lC-9vN" firstAttribute="top" secondItem="GKt-jT-6Na" secondAttribute="bottom" constant="8" id="KSg-oU-9Vd"/>
+                            <constraint firstItem="heg-9n-Gug" firstAttribute="leading" secondItem="Yvk-bQ-Vri" secondAttribute="leading" constant="16" id="RMs-vu-HSr"/>
+                            <constraint firstItem="heg-9n-Gug" firstAttribute="top" secondItem="ZVA-dO-i6y" secondAttribute="bottom" constant="8" id="U5W-dQ-SMb"/>
+                            <constraint firstItem="GKt-jT-6Na" firstAttribute="leading" secondItem="Yvk-bQ-Vri" secondAttribute="leading" constant="16" id="VsD-xq-xcd"/>
+                            <constraint firstItem="HiC-lC-9vN" firstAttribute="leading" secondItem="Yvk-bQ-Vri" secondAttribute="leading" constant="16" id="hVc-Ds-CgL"/>
+                            <constraint firstItem="ZVA-dO-i6y" firstAttribute="top" secondItem="HiC-lC-9vN" secondAttribute="bottom" constant="8" id="kjh-dT-h9y"/>
+                            <constraint firstItem="GKt-jT-6Na" firstAttribute="top" secondItem="Yvk-bQ-Vri" secondAttribute="top" constant="32" id="wIP-5v-FMw"/>
+                            <constraint firstItem="ZVA-dO-i6y" firstAttribute="leading" secondItem="Yvk-bQ-Vri" secondAttribute="leading" constant="16" id="wbd-DD-STi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avatarImageView" destination="GKt-jT-6Na" id="LDf-aC-eDE"/>
+                        <outlet property="descriptionLabel" destination="heg-9n-Gug" id="UON-gm-FNJ"/>
+                        <outlet property="exitButton" destination="Xo0-UL-ATi" id="DrG-xB-Jsb"/>
+                        <outlet property="loginNameLabel" destination="ZVA-dO-i6y" id="nTB-Ah-ejp"/>
+                        <outlet property="nameLabel" destination="HiC-lC-9vN" id="q4i-aB-a5I"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tar-GF-t2m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-903.05343511450383" y="13.380281690140846"/>
+        </scene>
         <!--Images List View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -93,9 +166,14 @@
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
+        <image name="Exit" width="24" height="24"/>
+        <image name="avatarExample" width="70" height="70"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray">
+            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
