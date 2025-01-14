@@ -10,6 +10,8 @@ import UIKit
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let authScreenLogo = UIImage(named: "logo_of_Unsplash")
+    private let oauth2Service = OAuth2Service.shared
+    private lazy var tokenStorage = OAuth2TokenStorage.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +43,17 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        //TODO: process code
+        navigationController?.popToRootViewController(animated: true)
+        
+        oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
+            switch result {
+            case .success(let token):
+                self?.tokenStorage.token = token
+                self?.dismiss(animated: true)
+            case .failure(let failure):
+                print("failure=\(failure)")
+            }
+        }
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
