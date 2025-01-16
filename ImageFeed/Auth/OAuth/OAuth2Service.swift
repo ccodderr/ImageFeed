@@ -16,7 +16,7 @@ final class OAuth2Service {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         guard let request = makeOAuthTokenRequest(code: code) else {
-            print("Error: can't make request")
+            print("Error: failed to create the request")
             return completion(.failure(NetworkError.invalidUrl))
         }
         
@@ -58,7 +58,7 @@ private extension OAuth2Service {
             + "&grant_type=authorization_code",
             relativeTo: baseURL
         ) else {
-            print("Error: invalid url")
+            print("Error: failed to create URL")
             return nil
         }
         

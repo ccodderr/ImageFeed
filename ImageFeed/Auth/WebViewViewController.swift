@@ -8,7 +8,7 @@
 import UIKit
 @preconcurrency import WebKit
 
-enum WebViewConstants {
+private enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 }
 
@@ -101,7 +101,7 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-
+    
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,
