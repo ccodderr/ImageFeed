@@ -9,7 +9,6 @@ import UIKit
 
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
-    private let authScreenLogo = UIImage(named: "logo_of_Unsplash")
     private let oauth2Service = OAuth2Service.shared
     private lazy var tokenStorage = OAuth2TokenStorage.shared
     
