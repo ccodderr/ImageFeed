@@ -17,14 +17,30 @@ final class ProfileViewController: UIViewController {
         target: ProfileViewController.self,
         action: #selector(Self.didTapButton)
     )
+    private let profileService = ProfileService.shared
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
+        
+        loadProfileData()
     }
     
     @objc private func didTapButton() {
+        
+    }
+    
+    func loadProfileData() {
+        guard let profile = profileService.profile else { return }
+        
+        setProfileData(profile: profile)
+    }
+    
+    private func setProfileData(profile: Profile) {
+        nameLabel?.text = profile.name
+        loginNameLabel?.text = profile.loginName
+        descriptionLabel?.text = profile.bio
     }
     
     private func setupLayout() {
@@ -93,5 +109,4 @@ final class ProfileViewController: UIViewController {
             exitButton.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
-
 }
