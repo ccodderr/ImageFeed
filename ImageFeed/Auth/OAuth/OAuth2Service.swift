@@ -9,6 +9,8 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    private var lastCode: String?
+    private var lastTask: URLSessionTask?
     private init() {}
     
     func fetchOAuthToken(
@@ -20,9 +22,20 @@ final class OAuth2Service {
             return completion(.failure(NetworkError.invalidUrl))
         }
         
-        let task = URLSession.shared.data(
+        if lastCode != code {
+            lastCode = code
+        } else {
+            completion(.failure(NetworkError.duplicate))
+            return
+        }
+        
+        lastTask?.cancel()
+        
+        lastTask = URLSession.shared.data(
             for: request
-        ) { result in
+        ) { [weak self] result in
+            self?.lastCode = nil
+            
             switch result {
             case .success(let data):
                 do {
@@ -38,7 +51,7 @@ final class OAuth2Service {
             }
         }
         
-        task.resume()
+        lastTask?.resume()
     }
 }
 
