@@ -45,7 +45,7 @@ final class OAuth2Service {
 private extension OAuth2Service {
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let baseURL = URL(string: "https://unsplash.com") else {
-            print("Error: invalid url")
+            print("Error: failed to create URL")
             return nil
         }
         
