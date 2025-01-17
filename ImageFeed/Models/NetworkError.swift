@@ -13,4 +13,5 @@ enum NetworkError: Error {
     case invalidUrl
     case decodingError(Error?)
     case duplicate
+    case noData
 }

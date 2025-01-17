@@ -16,13 +16,13 @@ final class ProfileService {
     
     func loadProfile(
         with token: String,
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<Profile, Error>) -> Void
     ) {
         fetchProfile(token) { [weak self] result in
             switch result {
             case .success(let profile):
                 self?.profile = profile
-                completion(.success(()))
+                completion(.success(profile))
             case .failure(let failure):
                 completion(.failure(failure))
             }

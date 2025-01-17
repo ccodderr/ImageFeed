@@ -32,7 +32,12 @@ final class SplashViewController: UIViewController {
                 UIBlockingProgressHUD.dismiss()
 
                 switch result {
-                case .success:
+                case .success(let profile):
+                    ProfileImageService.shared.fetchProfileImage(
+                        username: profile.username,
+                        nil
+                    )
+                    
                     let imageListViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "mainTabbarId")
                     imageListViewController.modalPresentationStyle = .fullScreen
                     self?.present(imageListViewController, animated: true, completion: nil)
