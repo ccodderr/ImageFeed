@@ -69,7 +69,7 @@ final class WebViewViewController: UIViewController {
     
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            print("Components initialization failed")
+            print("[loadAuthView]: URLComponents initialization failed")
             return
         }
         
@@ -81,7 +81,7 @@ final class WebViewViewController: UIViewController {
         ]
         
         guard let url = urlComponents.url else {
-            print("URL creation failed")
+            print("[loadAuthView]: URL creation failed")
             return
         }
         
@@ -114,6 +114,7 @@ extension WebViewViewController: WKNavigationDelegate {
         {
             return codeItem.value
         } else {
+            print("[code]: Code extraction failed for URL \(navigationAction.request.url?.absoluteString ?? "unknown")")
             return nil
         }
     }

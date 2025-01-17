@@ -23,7 +23,7 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                assertionFailure("[prepare]: NavigationError - Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
             webViewViewController.delegate = self
@@ -65,7 +65,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self?.tokenStorage.token = token
                 self?.dismiss(animated: true)
             case .failure(let failure):
-                print("failure=\(failure)")
+                print("[webViewViewController]: NetworkError - OAuth token fetch failed - \(failure)")
                 self?.showAuthErrorAlert()
             }
         }

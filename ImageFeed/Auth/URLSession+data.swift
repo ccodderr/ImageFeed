@@ -23,14 +23,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data))
                 } else {
-                    print("Network error: \(statusCode) was received")
+                    print("[dataTask]: NetworkError - HTTP error \(statusCode)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
-                print("Network error. URL Request \(error)")
+                print("[dataTask]: NetworkError - Request error: \(error.localizedDescription)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
-                print("Network error. URL Session error")
+                print("[dataTask]: NetworkError - URL Session error")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
