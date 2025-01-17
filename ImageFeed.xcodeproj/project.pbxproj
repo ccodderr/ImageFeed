@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		26E228892D37F16B00FC6B38 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 26E228882D37F16B00FC6B38 /* ProgressHUD */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		26843D4C2CDB96D20010F047 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26E228892D37F16B00FC6B38 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
+				26E228882D37F16B00FC6B38 /* ProgressHUD */,
 			);
 			productName = ImageFeed;
 			productReference = 26843D352CDB96CC0010F047 /* ImageFeed.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 26843D2C2CDB96CC0010F047;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				26E228872D37F16B00FC6B38 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 26843D362CDB96CC0010F047 /* Products */;
 			projectDirPath = "";
@@ -577,6 +586,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		26E228872D37F16B00FC6B38 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD.git";
+			requirement = {
+				kind = exactVersion;
+				version = 14.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		26E228882D37F16B00FC6B38 /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 26E228872D37F16B00FC6B38 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 26843D2D2CDB96CC0010F047 /* Project object */;
 }

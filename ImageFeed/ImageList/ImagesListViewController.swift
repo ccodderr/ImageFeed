@@ -70,6 +70,7 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imageListCell = cell as? ImagesListCell else {
+            print("Failed to cast cell to the expected type")
             return UITableViewCell()
         }
         
