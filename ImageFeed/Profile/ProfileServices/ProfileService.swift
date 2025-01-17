@@ -46,25 +46,18 @@ private extension ProfileService {
             return completion(.failure(ProfileError.invalidRequest))
         }
         
-        let task = URLSession.shared.data(
-            for: request
-        ) { result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileDTO, Error>) in
+            self?.task = nil
+
             switch result {
-            case .success(let data):
-                do {
-                    let raw = String(data: data, encoding: .utf8)
-                    let profileDTO = try JSONDecoder().decode(ProfileDTO.self, from: data)
-                    let profile: Profile = .init(from: profileDTO)
-                    completion(.success(profile))
-                } catch {
-                    print("error decoding=\(error)")
-                    completion(.failure(ProfileError.decodingError))
-                }
+            case .success(let profileDTO):
+                let profile = Profile(from: profileDTO)
+                completion(.success(profile))
+                
             case .failure(let error):
+                print("Request error: \(error)")
                 completion(.failure(error))
             }
-            
-            self.task = nil
         }
         
         self.task = task

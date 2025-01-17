@@ -31,20 +31,14 @@ final class OAuth2Service {
         
         lastTask?.cancel()
         
-        lastTask = URLSession.shared.data(
+        lastTask = URLSession.shared.objectTask(
             for: request
-        ) { [weak self] result in
+        ) { [weak self] (result: Result<AuthenticatedUser, Error>) in
             self?.lastCode = nil
             
             switch result {
-            case .success(let data):
-                do {
-                    let user = try JSONDecoder().decode(AuthenticatedUser.self, from: data)
-                    completion(.success(user.access_token))
-                } catch {
-                    print("Error: decoding error=\(error)")
-                    completion(.failure(NetworkError.decodingError(error)))
-                }
+            case .success(let profile):
+                completion(.success(profile.access_token))
             case .failure(let failure):
                 print("Error: request error=\(failure)")
                 completion(.failure(failure))

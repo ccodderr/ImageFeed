@@ -52,30 +52,23 @@ private extension ProfileImageService {
             return
         }
         
-        let task = URLSession.shared.data(
-            for: request
-        ) { result in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileImageDTO, Error>) in
+            self?.task = nil
+            
             switch result {
-            case .success(let data):
-                do {
-                    let profileImage = try JSONDecoder().decode(ProfileImageDTO.self, from: data)
-                    NotificationCenter.default
-                        .post(
-                            name: ProfileImageService.didChangeNotification,
-                            object: self,
-                            userInfo: ["URL": profileImage]
-                        )
-                    completion(.success(profileImage.profile_image.small))
-                } catch {
-                    print("error decoding=\(error)")
-                    completion(.failure(ProfileError.decodingError))
-                }
-            case .failure(let error):
+            case .success(let profileImageDTO):
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": profileImageDTO]
+                    )
+                completion(.success(profileImageDTO.profile_image.small))
                 
+            case .failure(let error):
+                print("Request error: \(error)")
                 completion(.failure(error))
             }
-            
-            self.task = nil
         }
         
         self.task = task
