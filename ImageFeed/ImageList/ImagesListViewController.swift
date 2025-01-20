@@ -24,7 +24,7 @@ class ImagesListViewController: UIViewController {
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
             else {
-                assertionFailure("Invalid segue destination")
+                print("[prepare(for:sender:)]: Invalid segue destination or sender")
                 return
             }
             
@@ -39,6 +39,7 @@ class ImagesListViewController: UIViewController {
         let imageName = "\(indexPath.row)"
         
         guard let image = UIImage(named: imageName) else {
+            print("[configCell]: Image not found for \(imageName)")
             return
         }
         
@@ -70,6 +71,7 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imageListCell = cell as? ImagesListCell else {
+            print("[tableView(cellForRowAt:)]: Failed to cast cell to ImagesListCell")
             return UITableViewCell()
         }
         
@@ -85,6 +87,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
+            print("[heightForRowAt]: Image not found for row \(indexPath.row)")
             return 0
         }
         
