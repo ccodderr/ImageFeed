@@ -18,7 +18,7 @@ final class OAuth2Service {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         guard let request = makeOAuthTokenRequest(code: code) else {
-            print("Error: failed to create the request")
+            print("[fetchOAuthToken]: NetworkError - Invalid URL")
             return completion(.failure(NetworkError.invalidUrl))
         }
         
@@ -37,10 +37,10 @@ final class OAuth2Service {
             self?.lastCode = nil
             
             switch result {
-            case .success(let profile):
-                completion(.success(profile.access_token))
+            case .success(let user):
+                completion(.success(user.access_token))
             case .failure(let failure):
-                print("Error: request error=\(failure)")
+                print("[fetchOAuthToken]: NetworkError - Request error - \(failure)")
                 completion(.failure(failure))
             }
         }
@@ -52,7 +52,7 @@ final class OAuth2Service {
 private extension OAuth2Service {
     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let baseURL = URL(string: "https://unsplash.com") else {
-            print("Error: failed to create URL")
+            print("[makeOAuthTokenRequest]: NetworkError - Failed to create base URL")
             return nil
         }
         
@@ -65,7 +65,7 @@ private extension OAuth2Service {
             + "&grant_type=authorization_code",
             relativeTo: baseURL
         ) else {
-            print("Error: failed to create URL")
+            print("[makeOAuthTokenRequest]: NetworkError - Failed to create URL")
             return nil
         }
         
