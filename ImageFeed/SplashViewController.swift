@@ -9,11 +9,19 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "LaunchScreen")
+        return imageView
+    }()
+    
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +55,18 @@ final class SplashViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func setupView() {
+        view.addSubview(imageView)
+        view.backgroundColor = UIColor.ypBlack
+        
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 75),
+            imageView.heightAnchor.constraint(equalToConstant: 77.68),
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
 
