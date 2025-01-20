@@ -24,6 +24,7 @@ final class ProfileService {
                 self?.profile = profile
                 completion(.success(profile))
             case .failure(let failure):
+                print("[loadProfile]: Failure - \(failure.localizedDescription)")
                 completion(.failure(failure))
             }
         }
@@ -36,13 +37,13 @@ private extension ProfileService {
         completion: @escaping (Result<Profile, Error>) -> Void
     ) {
         if task != nil {
-            print("Request already in progress")
+            print("[fetchProfile]: Request already in progress")
             completion(.failure(ProfileError.requestInProgress))
             return
         }
         
         guard let request = makeUsersProfileRequest(authToken: token) else {
-            print("Error: failed to create the request")
+            print("[fetchProfile]: InvalidRequestError - failed to create URL")
             return completion(.failure(ProfileError.invalidRequest))
         }
         
@@ -55,7 +56,7 @@ private extension ProfileService {
                 completion(.success(profile))
                 
             case .failure(let error):
-                print("Request error: \(error)")
+                print("[fetchProfileImageURL]: Request error: \(error)")
                 completion(.failure(error))
             }
         }
@@ -71,7 +72,7 @@ private extension ProfileService {
                 relativeTo: Constants.defaultBaseURL
             )
         else {
-            print("Error: failed to create URL")
+            print("[makeProfileImageRequest]: URLCreationError - Failed to create URL")
             return nil
         }
         

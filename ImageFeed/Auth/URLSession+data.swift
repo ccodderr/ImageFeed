@@ -51,11 +51,11 @@ extension URLSession {
                     completion(.success(response))
                 } catch {
                     let invalidData = String(data: data, encoding: .utf8) ?? ""
-                    print("Decoding failed. Received data: \(invalidData)")
+                    print("[objectTask]: DecodingError - \(error.localizedDescription), data: \(invalidData)")
                     completion(.failure(NetworkError.decodingError(error)))
                 }
             case .failure(let error):
-                print("Request failed with error: \(error.localizedDescription)")
+                print("[objectTask]: NetworkError - \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

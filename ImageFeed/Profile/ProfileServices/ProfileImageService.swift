@@ -25,6 +25,7 @@ final class ProfileImageService {
                 self?.avatarURL = url
                 completion?(.success(()))
             case .failure(let failure):
+                print("[fetchProfileImage]: Failure - \(failure.localizedDescription)")
                 completion?(.failure(failure))
             }
         }
@@ -39,7 +40,7 @@ private extension ProfileImageService {
         assert(Thread.isMainThread)
         
         if task != nil {
-            print("Request already in progress")
+            print("[fetchProfileImageURL]: Request already in progress")
             completion(.failure(ProfileError.requestInProgress))
             return
         }
@@ -47,7 +48,7 @@ private extension ProfileImageService {
         guard
             let request = makeProfileImageRequest(username: username)
         else {
-            print("Error: failed to create URL")
+            print("[fetchProfileImageURL]: InvalidRequestError - failed to create URL")
             completion(.failure(ProfileError.invalidRequest))
             return
         }
@@ -66,7 +67,7 @@ private extension ProfileImageService {
                 completion(.success(profileImageDTO.profile_image.small))
                 
             case .failure(let error):
-                print("Request error: \(error)")
+                print("[fetchProfileImageURL]: Request error: \(error)")
                 completion(.failure(error))
             }
         }
@@ -77,8 +78,10 @@ private extension ProfileImageService {
     
     func makeProfileImageRequest(username: String) -> URLRequest? {
         guard
-            let token = OAuth2TokenStorage.shared.token
-        else { return nil }
+            let token = OAuth2TokenStorage.shared.token else {
+            print("[makeProfileImageRequest]: MissingTokenError - No token available")
+            return nil
+        }
         
         guard
             let url = URL(
@@ -87,7 +90,7 @@ private extension ProfileImageService {
                 relativeTo: Constants.defaultBaseURL
             )
         else {
-            print("Error: failed to create URL for username: \(username)")
+            print("[makeProfileImageRequest]: URLCreationError - Failed to create URL for username: \(username)")
             return nil
         }
 

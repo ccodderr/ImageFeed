@@ -50,7 +50,7 @@ final class SplashViewController: UIViewController {
                     imageListViewController.modalPresentationStyle = .fullScreen
                     self?.present(imageListViewController, animated: true, completion: nil)
                 case .failure(let error):
-                    print("error: \(error)")
+                    print("[SplashViewController]: ProfileError - \(error.localizedDescription)")
                     self?.showAuthErrorAlert()
                 }
             }
