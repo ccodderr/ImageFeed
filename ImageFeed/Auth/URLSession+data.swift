@@ -44,7 +44,6 @@ extension URLSession {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(T.self, from: data)
                     completion(.success(response))
                 } catch {

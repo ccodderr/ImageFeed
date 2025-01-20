@@ -6,9 +6,19 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    private var avatarImageView = UIImage(systemName: "person.crop.circle.fill")
+    private lazy var avatarImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "profileIcon")
+        imageView.tintColor = .ypGray
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
     private var nameLabel: UILabel?
     private var loginNameLabel: UILabel?
     private var descriptionLabel: UILabel?
@@ -59,15 +69,17 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+        
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "profileIcon")
+        )
     }
     
     private func setupLayout() {
         // ImageView
-        let imageView = UIImageView(image: avatarImageView)
-        imageView.tintColor = .ypGray
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
+        view.addSubview(avatarImageView)
         
         // Name Label
         let nameLabel = UILabel()
@@ -104,14 +116,14 @@ final class ProfileViewController: UIViewController {
         // Constraints
         NSLayoutConstraint.activate([
             // ImageView Constraints
-            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            imageView.widthAnchor.constraint(equalToConstant: 70),
-            imageView.heightAnchor.constraint(equalToConstant: 70),
+            avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 70),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 70),
             
             // Name Label Constraints
             nameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
             
             // Login Name Label Constraints
             loginNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -123,7 +135,7 @@ final class ProfileViewController: UIViewController {
             
             // Exit Button Constraints
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            exitButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             exitButton.widthAnchor.constraint(equalToConstant: 24),
             exitButton.heightAnchor.constraint(equalToConstant: 24)
         ])
