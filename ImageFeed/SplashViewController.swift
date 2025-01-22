@@ -26,8 +26,8 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    
-        guard let token = storage.token else {
+        
+        guard let token = storage.token, !token.isEmpty else {
             let authViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "authNavigationId")
             authViewController.modalPresentationStyle = .fullScreen
             present(authViewController, animated: true, completion: nil)
@@ -46,9 +46,9 @@ final class SplashViewController: UIViewController {
                         nil
                     )
                     
-                    let imageListViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "mainTabbarId")
-                    imageListViewController.modalPresentationStyle = .fullScreen
-                    self?.present(imageListViewController, animated: true, completion: nil)
+                    let tabBarController = TabBarController()
+                    tabBarController.modalPresentationStyle = .fullScreen
+                    self?.present(tabBarController, animated: true)
                 case .failure(let error):
                     print("[SplashViewController]: ProfileError - \(error.localizedDescription)")
                     self?.showAuthErrorAlert()

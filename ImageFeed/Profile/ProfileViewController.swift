@@ -45,14 +45,20 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
+        
         updateAvatar()
+    }
+    
+    deinit {
+        guard let profileImageServiceObserver else { return }
+        NotificationCenter.default.removeObserver(profileImageServiceObserver)
     }
     
     @objc private func didTapButton() {
         
     }
     
-    func loadProfileData() {
+    private func loadProfileData() {
         guard let profile = profileService.profile else { return }
         
         setProfileData(profile: profile)
