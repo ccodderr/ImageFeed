@@ -17,11 +17,18 @@ final class ImagesListCell: UITableViewCell {
     weak var delegate: ImagesListCellDelegate?
     private var isLiked: Bool = false
     
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter
+    }()
+    
     private lazy var picture: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 16
         image.clipsToBounds = true
-        image.backgroundColor = .ypBlack.withAlphaComponent(50)
+        image.backgroundColor = .white.withAlphaComponent(0.5)
         image.contentMode = .scaleToFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -30,7 +37,7 @@ final class ImagesListCell: UITableViewCell {
     private lazy var button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.tintColor = .white.withAlphaComponent(50)
+        button.tintColor = .white.withAlphaComponent(0.5)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
         return button
@@ -40,7 +47,7 @@ final class ImagesListCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = .white
-        label.text = Date().dateTimeString
+        label.text = dateFormatter.string(from: Date())
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -91,6 +98,11 @@ final class ImagesListCell: UITableViewCell {
             }
         }
         
+        if let date = image.createdAt {
+            dateLabel.text = dateFormatter.string(from: date)
+        } else {
+            dateLabel.text = "..."
+        }
         setIsLiked(image.isLiked)
     }
     

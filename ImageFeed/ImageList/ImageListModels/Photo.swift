@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Photo {
+struct Photo: Equatable {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -15,4 +15,8 @@ struct Photo {
     let thumbImageURL: URL?
     let largeImageURL: URL?
     let isLiked: Bool
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }

@@ -72,7 +72,9 @@ final class ImagesListService {
                         isLiked: photoDTO.liked_by_user
                     )
                     
-                    self.photos.append(photo)
+                    if !self.photos.contains(photo) {
+                        self.photos.append(photo)
+                    }
                 }
                 
                 NotificationCenter.default
