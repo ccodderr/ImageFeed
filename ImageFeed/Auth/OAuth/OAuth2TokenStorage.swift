@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
@@ -15,10 +16,19 @@ final class OAuth2TokenStorage {
     
     var token: String? {
         get {
-            UserDefaults.standard.string(forKey: bearerTokenKey)
+            guard let token = KeychainWrapper.standard.string(forKey: bearerTokenKey) else {
+                print("[OAuth2TokenStorage]: Error - Failed to retrieve token from Keychain.")
+                return nil
+            }
+            return token
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: bearerTokenKey)
+            guard let newValue else {
+                print("[OAuth2TokenStorage]: Error - Failed to save token to Keychain.")
+                return
+            }
+            KeychainWrapper.standard.set(newValue, forKey: bearerTokenKey)
         }
     }
 }
+

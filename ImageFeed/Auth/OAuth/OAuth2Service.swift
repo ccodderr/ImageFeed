@@ -9,6 +9,8 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    private var lastCode: String?
+    private var lastTask: URLSessionTask?
     private init() {}
     
     func fetchOAuthToken(
@@ -20,25 +22,30 @@ final class OAuth2Service {
             return completion(.failure(NetworkError.invalidUrl))
         }
         
-        let task = URLSession.shared.data(
+        if lastCode != code {
+            lastCode = code
+        } else {
+            completion(.failure(NetworkError.duplicate))
+            return
+        }
+        
+        lastTask?.cancel()
+        
+        lastTask = URLSession.shared.objectTask(
             for: request
-        ) { result in
+        ) { [weak self] (result: Result<AuthenticatedUser, Error>) in
+            self?.lastCode = nil
+            
             switch result {
-            case .success(let data):
-                do {
-                    let user = try JSONDecoder().decode(AuthenticatedUser.self, from: data)
-                    completion(.success(user.access_token))
-                } catch {
-                    print("[fetchOAuthToken]: NetworkError - Decoding error - \(error)")
-                    completion(.failure(NetworkError.decodingError(error)))
-                }
+            case .success(let user):
+                completion(.success(user.access_token))
             case .failure(let failure):
                 print("[fetchOAuthToken]: NetworkError - Request error - \(failure)")
                 completion(.failure(failure))
             }
         }
         
-        task.resume()
+        lastTask?.resume()
     }
 }
 
