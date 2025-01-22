@@ -22,11 +22,16 @@ final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var loginNameLabel: UILabel?
     private var descriptionLabel: UILabel?
-    private let exitButton = UIButton.systemButton(
-        with: UIImage(systemName: "ipad.and.arrow.forward")!,
-        target: ProfileViewController.self,
-        action: #selector(Self.didTapButton)
-    )
+    
+    private lazy var logOutButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        button.tintColor = .ypRed
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let profileService = ProfileService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
@@ -55,7 +60,19 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
         
+        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
+            ProfileLogoutService.shared.logout()
+        }
+        let closeAlertAction = UIAlertAction(title: "Нет", style: .cancel)
+        
+        [logOutAction, closeAlertAction].forEach { alert.addAction($0) }
+        present(alert, animated: true)
     }
     
     private func loadProfileData() {
@@ -89,7 +106,6 @@ final class ProfileViewController: UIViewController {
         
         // Name Label
         let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.font = .systemFont(ofSize: 23)
         nameLabel.textColor = .white
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +114,6 @@ final class ProfileViewController: UIViewController {
         
         // Login Name Label
         let loginNameLabel = UILabel()
-        loginNameLabel.text = "@ekaterina_nov"
         loginNameLabel.font = .systemFont(ofSize: 13)
         loginNameLabel.textColor = .ypGray
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +122,6 @@ final class ProfileViewController: UIViewController {
         
         // Description Label
         let descriptionLabel = UILabel()
-        descriptionLabel.text = "Hello, world!"
         descriptionLabel.font = .systemFont(ofSize: 13)
         descriptionLabel.textColor = .white
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -115,9 +129,7 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = descriptionLabel
         
         // Exit Button
-        exitButton.tintColor = .ypRed
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(exitButton)
+        view.addSubview(logOutButton)
         
         // Constraints
         NSLayoutConstraint.activate([
@@ -140,10 +152,10 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             
             // Exit Button Constraints
-            exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            exitButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
-            exitButton.widthAnchor.constraint(equalToConstant: 24),
-            exitButton.heightAnchor.constraint(equalToConstant: 24)
+            logOutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+            logOutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            logOutButton.widthAnchor.constraint(equalToConstant: 24),
+            logOutButton.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
 }

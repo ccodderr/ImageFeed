@@ -11,7 +11,6 @@ final class ImagesListService {
     // MARK: - Properties
     private(set) var photos: [Photo] = []
     private var lastLoadedPage = 0
-    private var isLoading = false
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private lazy var dateFormatter: DateFormatter = {
@@ -26,6 +25,12 @@ final class ImagesListService {
     private init() {}
     
     private var task: URLSessionTask?
+    
+    func cleanData() {
+        task?.cancel()
+        photos = []
+        lastLoadedPage = 0
+    }
     
     func fetchPhotosNextPage(
         completion: ((Result<[Photo], Error>) -> Void)?
