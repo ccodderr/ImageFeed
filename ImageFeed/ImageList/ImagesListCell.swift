@@ -8,26 +8,35 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
+    private var isLiked: Bool = false
     
     private lazy var picture: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 16
         image.clipsToBounds = true
+        image.backgroundColor = .ypBlack.withAlphaComponent(50)
         image.contentMode = .scaleToFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
-    private var button: UIButton = {
+    private lazy var button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        button.tintColor = .white.withAlphaComponent(50)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
         return button
     }()
     
-    private var dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = .white
@@ -73,8 +82,7 @@ final class ImagesListCell: UITableViewCell {
                 .scaleFactor(UIScreen.main.scale),
                 .cacheOriginalImage
             ]
-        ) { [weak self] result in
-            guard let self else { return }
+        ) { [tableView] result in
             switch result {
             case .success:
                 tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -83,11 +91,16 @@ final class ImagesListCell: UITableViewCell {
             }
         }
         
-        if indexPath.row % 2 == 0 {
-            button.tintColor = .ypRed
-        } else {
-            button.tintColor = .white.withAlphaComponent(0.5)
-        }
+        setIsLiked(image.isLiked)
+    }
+    
+    @objc private func likeButtonClicked() {
+       delegate?.imageListCellDidTapLike(self)
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        self.isLiked = isLiked
+        button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
     }
     
     private func setupView() {
@@ -98,21 +111,22 @@ final class ImagesListCell: UITableViewCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        NSLayoutConstraint.activate([
-            picture.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            picture.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            picture.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            picture.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
-            
-            dateLabel.leadingAnchor.constraint(equalTo: picture.leadingAnchor, constant: 8),
-            dateLabel.bottomAnchor.constraint(equalTo: picture.bottomAnchor, constant: -8),
-            dateLabel.trailingAnchor.constraint(greaterThanOrEqualTo: picture.trailingAnchor, constant: -8),
-            
-            button.widthAnchor.constraint(equalToConstant: 44),
-            button.heightAnchor.constraint(equalToConstant: 44),
-            button.topAnchor.constraint(equalTo: picture.topAnchor),
-            button.trailingAnchor.constraint(equalTo: picture.trailingAnchor)
-        ])
+        NSLayoutConstraint.activate(
+            [
+                picture.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                picture.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+                picture.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+                picture.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+                
+                dateLabel.leadingAnchor.constraint(equalTo: picture.leadingAnchor, constant: 8),
+                dateLabel.bottomAnchor.constraint(equalTo: picture.bottomAnchor, constant: -8),
+                
+                button.widthAnchor.constraint(equalToConstant: 44),
+                button.heightAnchor.constraint(equalToConstant: 44),
+                button.topAnchor.constraint(equalTo: picture.topAnchor),
+                button.trailingAnchor.constraint(equalTo: picture.trailingAnchor)
+            ]
+        )
     }
     
     private func getHeight(of image: Photo, maxWidth: CGFloat) -> CGFloat {

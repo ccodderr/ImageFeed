@@ -48,10 +48,11 @@ final class SplashViewController: UIViewController {
                     
                     let tabBarController = TabBarController()
                     tabBarController.modalPresentationStyle = .fullScreen
+                    tabBarController.tabBar.backgroundColor = .ypBlack
                     self?.present(tabBarController, animated: true)
                 case .failure(let error):
                     print("[SplashViewController]: ProfileError - \(error.localizedDescription)")
-                    self?.showAuthErrorAlert()
+                    self?.showErrorAlert(message: AlertMessages.unknownError)
                 }
             }
         }
@@ -67,22 +68,5 @@ final class SplashViewController: UIViewController {
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-    }
-}
-
-private extension SplashViewController {
-    func showAuthErrorAlert() {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось получить данные",
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(title: "OK", style: .default) { _ in
-            self.dismiss(animated: true)
-        }
-        alert.addAction(action)
-        
-        present(alert, animated: true)
     }
 }

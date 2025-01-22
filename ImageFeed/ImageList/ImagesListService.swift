@@ -103,5 +103,70 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
+    
+    private func makeLikeRequest(
+        _ token: String,
+        _ photoId: String,
+        _ isLike: Bool
+    ) -> URLRequest? {
+        guard
+            let url = URL(
+                string: "/photos/\(photoId)/like",
+                relativeTo: Constants.defaultBaseURL
+                )
+        else {
+            print("[makeLikeRequest] - Failed to create URL with photoId: \(photoId)")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        return request
+    }
+    
+    func changeLike(
+        photoId: String,
+        isLike: Bool,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard
+            let token = OAuth2TokenStorage.shared.token
+        else { return }
+        
+        guard let request = makeLikeRequest(token, photoId, isLike) else {
+            print("[changeLike] Failed to create the request")
+            completion(.failure(ImagesListServiceError.invalidRequest))
+            return
+        }
+        
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<PhotoWrapper, Error>) in
+            guard let self else { return }
+            self.task = nil
+            
+            switch result {
+            case .success(_):
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = newPhoto
+                }
+                completion(.success(()))
+            case .failure(let error):
+                print("[changeLike] Request failed with error: \(error)")
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
 }
 

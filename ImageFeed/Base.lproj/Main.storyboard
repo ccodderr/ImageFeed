@@ -10,85 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Single Image View Controller-->
-        <scene sceneID="ATV-4G-Pv1">
-            <objects>
-                <viewController id="02N-uc-Fpc" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4dW-g1-VsX">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PsT-yY-tNv">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="16" translatesAutoresizingMaskIntoConstraints="NO" id="dzB-Sy-suO">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="dzB-Sy-suO" firstAttribute="top" secondItem="GHV-dP-MBG" secondAttribute="top" id="1tM-AT-cq6"/>
-                                    <constraint firstItem="GHV-dP-MBG" firstAttribute="bottom" secondItem="dzB-Sy-suO" secondAttribute="bottom" id="9G6-uz-iYt"/>
-                                    <constraint firstItem="dzB-Sy-suO" firstAttribute="leading" secondItem="GHV-dP-MBG" secondAttribute="leading" id="l5c-Yj-goC"/>
-                                    <constraint firstItem="GHV-dP-MBG" firstAttribute="trailing" secondItem="dzB-Sy-suO" secondAttribute="trailing" id="px0-BQ-iAe"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="F4L-Qh-u3i"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="GHV-dP-MBG"/>
-                            </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIz-YJ-un6">
-                                <rect key="frame" x="9" y="68" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="pUt-zh-MHW"/>
-                                    <constraint firstAttribute="height" constant="24" id="yiS-JY-e6E"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="chevron.backward" catalog="system">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="didTapBackButton:" destination="02N-uc-Fpc" eventType="touchUpInside" id="wag-BU-orD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcO-Lv-xlD">
-                                <rect key="frame" x="171.66666666666666" y="718" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="FZm-Qj-hLH"/>
-                                    <constraint firstAttribute="width" constant="50" id="jTH-Cv-ti0"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="sharing">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapShareButton:" destination="02N-uc-Fpc" eventType="touchUpInside" id="ti0-mF-vwR"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="d53-iT-mo7"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="PsT-yY-tNv" secondAttribute="bottom" id="13J-Z9-WBB"/>
-                            <constraint firstItem="d53-iT-mo7" firstAttribute="trailing" secondItem="PsT-yY-tNv" secondAttribute="trailing" id="WDQ-66-1V1"/>
-                            <constraint firstItem="aIz-YJ-un6" firstAttribute="top" secondItem="d53-iT-mo7" secondAttribute="top" constant="9" id="fOy-kz-111"/>
-                            <constraint firstItem="d53-iT-mo7" firstAttribute="bottom" secondItem="qcO-Lv-xlD" secondAttribute="bottom" constant="50" id="fbE-yS-ilg"/>
-                            <constraint firstItem="qcO-Lv-xlD" firstAttribute="centerX" secondItem="4dW-g1-VsX" secondAttribute="centerX" id="jY9-bu-NvG"/>
-                            <constraint firstItem="PsT-yY-tNv" firstAttribute="top" secondItem="4dW-g1-VsX" secondAttribute="top" id="sCJ-Mz-LGr"/>
-                            <constraint firstItem="PsT-yY-tNv" firstAttribute="leading" secondItem="d53-iT-mo7" secondAttribute="leading" id="wrf-HG-DK5"/>
-                            <constraint firstItem="aIz-YJ-un6" firstAttribute="leading" secondItem="d53-iT-mo7" secondAttribute="leading" constant="9" id="zdU-HF-oLT"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="f86-e0-YpQ"/>
-                    <connections>
-                        <outlet property="imageView" destination="dzB-Sy-suO" id="gdM-YC-grC"/>
-                        <outlet property="scrollView" destination="PsT-yY-tNv" id="DAV-WJ-PoP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="stV-Ui-S28" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1483.206106870229" y="-233.09859154929578"/>
-        </scene>
         <!--Auth View Controller-->
         <scene sceneID="OEi-ik-6Rw">
             <objects>
@@ -200,10 +121,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="16" width="1280" height="1920"/>
-        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="logo_of_Unsplash" width="60" height="60"/>
-        <image name="sharing" width="51" height="51"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

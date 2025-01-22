@@ -21,7 +21,6 @@ class ImagesListViewController: UIViewController {
     }()
     
     private var photos: [Photo] = []
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
     private var imagesServiceObserver: NSObjectProtocol?
     private var isEnd = false
@@ -53,23 +52,6 @@ class ImagesListViewController: UIViewController {
         NotificationCenter.default.removeObserver(imagesServiceObserver)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                print("[prepare(for:sender:)]: Invalid segue destination or sender")
-                return
-            }
-            
-            let image = UIImage(named: "\(photos[indexPath.row])")
-            viewController.image = image
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-    
     private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
@@ -95,6 +77,16 @@ class ImagesListViewController: UIViewController {
         ])
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
+    
+    private func openSingleImageViewContriller(indexPath: IndexPath) {
+        let vc = SingleImageViewController(image: photos[indexPath.row])
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .fullScreen
+        
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+    }
 }
 
     //MARK: UITableView
@@ -110,6 +102,7 @@ extension ImagesListViewController: UITableViewDataSource {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
+        
         guard let imageListCell = tableView.dequeueReusableCell(
             withIdentifier: ImagesListCell.reuseIdentifier,
             for: indexPath
@@ -119,6 +112,9 @@ extension ImagesListViewController: UITableViewDataSource {
             )
             return UITableViewCell()
         }
+        
+        imageListCell.delegate = self
+        imageListCell.selectionStyle = .none
         
         let image = photos[indexPath.row]
         imageListCell.configCell(
@@ -135,7 +131,7 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        openSingleImageViewContriller(indexPath: indexPath)
     }
     
     func tableView(
@@ -160,6 +156,26 @@ extension ImagesListViewController: UITableViewDelegate {
     ) {
         if indexPath.row + 1 == photos.count, !isEnd {
             imagesListService.fetchPhotosNextPage(completion: nil)
+        }
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                photos = imagesListService.photos
+                cell.setIsLiked(photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                showErrorAlert(message: AlertMessages.likeError)
+            }
         }
     }
 }
