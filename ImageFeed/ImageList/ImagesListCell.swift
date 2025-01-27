@@ -10,9 +10,13 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func updateRow(at indexPath: IndexPath)
 }
 
 final class ImagesListCell: UITableViewCell {
+    
+    // MARK: - Properties
+    
     static let reuseIdentifier = "ImagesListCell"
     weak var delegate: ImagesListCellDelegate?
     private var isLiked: Bool = false
@@ -71,13 +75,13 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Methods
     
     func configCell(
-        in tableView: UITableView,
         with indexPath: IndexPath,
-        image: Photo
+        image: Photo,
+        maxWidth: CGFloat
     ) {
         let size: CGSize = .init(
-            width: tableView.bounds.width,
-            height: getHeight(of: image, maxWidth: tableView.bounds.width)
+            width: maxWidth,
+            height: getHeight(of: image, maxWidth: maxWidth)
         )
         
         picture.kf.indicatorType = .activity
@@ -89,10 +93,10 @@ final class ImagesListCell: UITableViewCell {
                 .scaleFactor(UIScreen.main.scale),
                 .cacheOriginalImage
             ]
-        ) { [tableView] result in
+        ) { [weak self] result in
             switch result {
             case .success:
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+                self?.delegate?.updateRow(at: indexPath)
             case .failure(let error):
                 print("[ImageListCell] Failed to load image in cell. Error: \(error.localizedDescription).")
             }
@@ -106,13 +110,13 @@ final class ImagesListCell: UITableViewCell {
         setIsLiked(image.isLiked)
     }
     
-    @objc private func likeButtonClicked() {
-       delegate?.imageListCellDidTapLike(self)
-    }
-    
     func setIsLiked(_ isLiked: Bool) {
         self.isLiked = isLiked
         button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
+    }
+    
+    @objc private func likeButtonClicked() {
+       delegate?.imageListCellDidTapLike(self)
     }
     
     private func setupView() {

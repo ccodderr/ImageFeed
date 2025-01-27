@@ -8,7 +8,9 @@
 import Foundation
 
 final class ImagesListService {
+    
     // MARK: - Properties
+    
     private(set) var photos: [Photo] = []
     private var lastLoadedPage = 0
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
@@ -25,6 +27,8 @@ final class ImagesListService {
     private init() {}
     
     private var task: URLSessionTask?
+    
+    // MARK: - Methods
     
     func cleanData() {
         task?.cancel()
@@ -95,43 +99,6 @@ final class ImagesListService {
         task.resume()
     }
     
-    private func makePhotosRequest(_ token: String, page: Int) -> URLRequest? {
-        guard
-            let url = URL(
-                string: "/photos?page=\(page)",
-                relativeTo: Constants.defaultBaseURL
-            )
-        else {
-            print("[makeProfileImageRequest]: URLCreationError - Failed to create URL with page: \(page)")
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
-    }
-    
-    private func makeLikeRequest(
-        _ token: String,
-        _ photoId: String,
-        _ isLike: Bool
-    ) -> URLRequest? {
-        guard
-            let url = URL(
-                string: "/photos/\(photoId)/like",
-                relativeTo: Constants.defaultBaseURL
-                )
-        else {
-            print("[makeLikeRequest] - Failed to create URL with photoId: \(photoId)")
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = isLike ? "POST" : "DELETE"
-        return request
-    }
-    
     func changeLike(
         photoId: String,
         isLike: Bool,
@@ -174,6 +141,43 @@ final class ImagesListService {
         }
         
         task.resume()
+    }
+    
+    private func makePhotosRequest(_ token: String, page: Int) -> URLRequest? {
+        guard
+            let url = URL(
+                string: "/photos?page=\(page)",
+                relativeTo: Constants.defaultBaseURL
+            )
+        else {
+            print("[makeProfileImageRequest]: URLCreationError - Failed to create URL with page: \(page)")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func makeLikeRequest(
+        _ token: String,
+        _ photoId: String,
+        _ isLike: Bool
+    ) -> URLRequest? {
+        guard
+            let url = URL(
+                string: "/photos/\(photoId)/like",
+                relativeTo: Constants.defaultBaseURL
+                )
+        else {
+            print("[makeLikeRequest] - Failed to create URL with photoId: \(photoId)")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        return request
     }
 }
 

@@ -101,6 +101,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupLayout() {
+        view.backgroundColor = .ypBlack
+        
         // ImageView
         view.addSubview(avatarImageView)
         

@@ -8,7 +8,10 @@
 import UIKit
 import Kingfisher
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -26,6 +29,7 @@ class ImagesListViewController: UIViewController {
     private var isEnd = false
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -90,6 +94,7 @@ class ImagesListViewController: UIViewController {
 }
 
     //MARK: UITableView
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
@@ -118,9 +123,9 @@ extension ImagesListViewController: UITableViewDataSource {
         
         let image = photos[indexPath.row]
         imageListCell.configCell(
-            in: tableView,
             with: indexPath,
-            image: image
+            image: image,
+            maxWidth: tableView.bounds.width
         )
         return imageListCell
     }
@@ -167,16 +172,21 @@ extension ImagesListViewController: ImagesListCellDelegate {
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
             guard let self else { return }
+            
+            UIBlockingProgressHUD.dismiss()
+
             switch result {
             case .success:
                 photos = imagesListService.photos
                 cell.setIsLiked(photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 showErrorAlert(message: AlertMessages.likeError)
             }
         }
+    }
+    
+    func updateRow(at indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 
