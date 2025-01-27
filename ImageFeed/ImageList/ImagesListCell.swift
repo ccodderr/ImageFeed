@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func updateRow(at indexPath: IndexPath)
 }
 
 final class ImagesListCell: UITableViewCell {
@@ -71,13 +72,48 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Methods
     
     func configCell(
-        in tableView: UITableView,
         with indexPath: IndexPath,
-        image: Photo
+        image: Photo?,
+        maxWidth: CGFloat
     ) {
+        setImage(
+            for: image,
+            maxWidth: maxWidth,
+            indexPath: indexPath
+        )
+        
+        if let date = image?.createdAt {
+            dateLabel.text = dateFormatter.string(from: date)
+        } else {
+            dateLabel.text = "..."
+        }
+        setIsLiked(image?.isLiked ?? false)
+    }
+    
+    @objc private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        self.isLiked = isLiked
+        button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
+    }
+}
+
+private extension ImagesListCell {
+    func setImage(
+        for image: Photo?,
+        maxWidth: CGFloat,
+        indexPath: IndexPath
+    ) {
+        guard let image = image else {
+            picture.image = UIImage(named: "placeholderImageList")
+            return
+        }
+        
         let size: CGSize = .init(
-            width: tableView.bounds.width,
-            height: getHeight(of: image, maxWidth: tableView.bounds.width)
+            width: maxWidth,
+            height: getHeight(of: image, maxWidth: maxWidth)
         )
         
         picture.kf.indicatorType = .activity
@@ -89,33 +125,17 @@ final class ImagesListCell: UITableViewCell {
                 .scaleFactor(UIScreen.main.scale),
                 .cacheOriginalImage
             ]
-        ) { [tableView] result in
+        ) { [weak self] result in
             switch result {
             case .success:
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+                self?.delegate?.updateRow(at: indexPath)
             case .failure(let error):
                 print("[ImageListCell] Failed to load image in cell. Error: \(error.localizedDescription).")
             }
         }
-        
-        if let date = image.createdAt {
-            dateLabel.text = dateFormatter.string(from: date)
-        } else {
-            dateLabel.text = "..."
-        }
-        setIsLiked(image.isLiked)
     }
     
-    @objc private func likeButtonClicked() {
-       delegate?.imageListCellDidTapLike(self)
-    }
-    
-    func setIsLiked(_ isLiked: Bool) {
-        self.isLiked = isLiked
-        button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
-    }
-    
-    private func setupView() {
+    func setupView() {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         [picture, dateLabel, button].forEach {
@@ -141,7 +161,7 @@ final class ImagesListCell: UITableViewCell {
         )
     }
     
-    private func getHeight(of image: Photo, maxWidth: CGFloat) -> CGFloat {
+    func getHeight(of image: Photo, maxWidth: CGFloat) -> CGFloat {
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = maxWidth - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width

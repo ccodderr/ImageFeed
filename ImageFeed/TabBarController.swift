@@ -16,6 +16,7 @@ final class TabBarController: UITabBarController {
         tabBar.isTranslucent = false
         
         let imagesListViewController = ImagesListViewController()
+        imagesListViewController.presenter = ImagesListPresenter()
         imagesListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(systemName: "square.stack.fill"),
@@ -23,6 +24,7 @@ final class TabBarController: UITabBarController {
         )
         
         let profileViewController = ProfileViewController()
+        profileViewController.presenter = ProfilePresenter()
         profileViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(systemName: "person.crop.circle.fill"),
