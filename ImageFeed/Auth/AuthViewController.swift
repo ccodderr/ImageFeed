@@ -8,10 +8,16 @@
 import UIKit
 import ProgressHUD
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     private lazy var tokenStorage = OAuth2TokenStorage.shared
+    
+    weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +30,14 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("[prepare]: NavigationError - Failed to prepare for \(showWebViewSegueIdentifier)")
+                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
+            
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -57,7 +68,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self?.dismiss(animated: true)
             case .failure(let failure):
                 print("[webViewViewController]: NetworkError - OAuth token fetch failed - \(failure)")
-                self?.showErrorAlert(message: AlertMessages.networkError)
+                self?.showErrorAlert(error: AlertMessages.networkError)
             }
         }
     }

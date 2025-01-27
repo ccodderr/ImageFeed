@@ -25,6 +25,7 @@ final class OAuth2Service {
         if lastCode != code {
             lastCode = code
         } else {
+            print("[fetchOAuthToken]: NetworkError - Duplicate network request detected")
             completion(.failure(NetworkError.duplicate))
             return
         }
