@@ -6,14 +6,20 @@
 //
 
 import UIKit
- 
+
 final class TabBarController: UITabBarController {
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        tabBar.backgroundColor = .ypBlack
+        tabBar.barTintColor = .ypBlack
+        tabBar.tintColor = .white
+        tabBar.isTranslucent = false
         
-        let imagesListViewController = storyboard.instantiateViewController(
-            withIdentifier: "ImagesListViewController"
+        let imagesListViewController = ImagesListViewController()
+        imagesListViewController.tabBarItem = UITabBarItem(
+            title: "",
+            image: UIImage(systemName: "square.stack.fill"),
+            selectedImage: nil
         )
         
         let profileViewController = ProfileViewController()
@@ -24,5 +30,9 @@ final class TabBarController: UITabBarController {
         )
         
         self.viewControllers = [imagesListViewController, profileViewController]
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

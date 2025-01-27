@@ -26,8 +26,8 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    
-        guard let token = storage.token else {
+        
+        guard let token = storage.token, !token.isEmpty else {
             let authViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "authNavigationId")
             authViewController.modalPresentationStyle = .fullScreen
             present(authViewController, animated: true, completion: nil)
@@ -41,17 +41,20 @@ final class SplashViewController: UIViewController {
 
                 switch result {
                 case .success(let profile):
-                    ProfileImageService.shared.fetchProfileImage(
-                        username: profile.username,
-                        nil
-                    )
+                    if let username = profile.username {
+                        ProfileImageService.shared.fetchProfileImage(
+                            username: username,
+                            nil
+                        )
+                    }
                     
-                    let imageListViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "mainTabbarId")
-                    imageListViewController.modalPresentationStyle = .fullScreen
-                    self?.present(imageListViewController, animated: true, completion: nil)
+                    let tabBarController = TabBarController()
+                    tabBarController.modalPresentationStyle = .fullScreen
+                    tabBarController.tabBar.backgroundColor = .ypBlack
+                    self?.present(tabBarController, animated: true)
                 case .failure(let error):
                     print("[SplashViewController]: ProfileError - \(error.localizedDescription)")
-                    self?.showAuthErrorAlert()
+                    self?.showErrorAlert(message: AlertMessages.unknownError)
                 }
             }
         }
@@ -67,22 +70,5 @@ final class SplashViewController: UIViewController {
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-    }
-}
-
-private extension SplashViewController {
-    func showAuthErrorAlert() {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось получить данные",
-            preferredStyle: .alert
-        )
-        
-        let action = UIAlertAction(title: "OK", style: .default) { _ in
-            self.dismiss(animated: true)
-        }
-        alert.addAction(action)
-        
-        present(alert, animated: true)
     }
 }

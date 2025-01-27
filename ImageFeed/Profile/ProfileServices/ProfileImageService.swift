@@ -15,6 +15,11 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 
+    func cleanData() {
+        avatarURL = nil
+        task?.cancel()
+    }
+    
     func fetchProfileImage(
         username: String,
         _ completion: ((Result<Void, Error>) -> Void)?

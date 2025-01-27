@@ -14,6 +14,11 @@ final class ProfileService {
     private var task: URLSessionTask?
     private(set) var profile: Profile?
     
+    func cleanData() {
+        profile = nil
+        task?.cancel()
+    }
+    
     func loadProfile(
         with token: String,
         completion: @escaping (Result<Profile, Error>) -> Void
