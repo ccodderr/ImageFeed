@@ -8,7 +8,15 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func setProfileData(profile: Profile)
+    func updateAvatar(with url: URL)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    var presenter: ProfilePresenterProtocol?
+    
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,44 +27,45 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private var nameLabel: UILabel?
-    private var loginNameLabel: UILabel?
-    private var descriptionLabel: UILabel?
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 23)
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var loginNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .ypGray
+        return label
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .white
+        return label
+    }()
     
     private lazy var logOutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ipad.and.arrow.forward"), for: .normal)
-        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(didTapButton),
+            for: .touchUpInside
+        )
         button.tintColor = .ypRed
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    private let profileService = ProfileService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-        loadProfileData()
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        
-        updateAvatar()
-    }
-    
-    deinit {
-        guard let profileImageServiceObserver else { return }
-        NotificationCenter.default.removeObserver(profileImageServiceObserver)
+        presenter?.view = self
+        presenter?.viewDidLoad()
     }
     
     @objc private func didTapButton() {
@@ -75,24 +84,13 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    private func loadProfileData() {
-        guard let profile = profileService.profile else { return }
-        
-        setProfileData(profile: profile)
+    func setProfileData(profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
-    private func setProfileData(profile: Profile) {
-        nameLabel?.text = profile.name
-        loginNameLabel?.text = profile.loginName
-        descriptionLabel?.text = profile.bio
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        
+    func updateAvatar(with url: URL) {
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: url,
@@ -101,35 +99,17 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupLayout() {
-        // ImageView
-        view.addSubview(avatarImageView)
+        view.backgroundColor = .ypBlack
         
-        // Name Label
-        let nameLabel = UILabel()
-        nameLabel.font = .systemFont(ofSize: 23)
-        nameLabel.textColor = .white
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nameLabel)
-        self.nameLabel = nameLabel
-        
-        // Login Name Label
-        let loginNameLabel = UILabel()
-        loginNameLabel.font = .systemFont(ofSize: 13)
-        loginNameLabel.textColor = .ypGray
-        loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loginNameLabel)
-        self.loginNameLabel = loginNameLabel
-        
-        // Description Label
-        let descriptionLabel = UILabel()
-        descriptionLabel.font = .systemFont(ofSize: 13)
-        descriptionLabel.textColor = .white
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descriptionLabel)
-        self.descriptionLabel = descriptionLabel
-        
-        // Exit Button
-        view.addSubview(logOutButton)
+        [
+            avatarImageView,
+            nameLabel,
+            loginNameLabel,
+            descriptionLabel,
+            logOutButton
+        ].forEach { view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         // Constraints
         NSLayoutConstraint.activate([

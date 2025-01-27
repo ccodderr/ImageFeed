@@ -163,7 +163,8 @@ private extension SingleImageViewController {
                 self?.backgroundImageView.isHidden = true
                 self?.rescaleAndCenterImageInScrollView(image: image.image)
             case .failure:
-                self?.showErrorAlert(message: AlertMessages.unknownError)
+                print("[loadImage]: Failed to load image")
+                self?.showErrorAlert(error: AlertMessages.unknownError)
             }
         }
     }

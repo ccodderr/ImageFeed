@@ -52,7 +52,7 @@ final class SplashViewController: UIViewController {
                     self?.present(tabBarController, animated: true)
                 case .failure(let error):
                     print("[SplashViewController]: ProfileError - \(error.localizedDescription)")
-                    self?.showErrorAlert(message: AlertMessages.unknownError)
+                    self?.showErrorAlert(error: AlertMessages.unknownError)
                 }
             }
         }
