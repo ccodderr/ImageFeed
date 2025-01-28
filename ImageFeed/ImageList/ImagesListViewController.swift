@@ -30,6 +30,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }()
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
@@ -73,6 +74,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
 }
 
     //MARK: UITableView
+
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
@@ -155,14 +157,14 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
-    func updateRow(at indexPath: IndexPath) {
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-    }
-    
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         presenter?.didTapLike(for: indexPath)
+    }
+    
+    func updateRow(at indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 

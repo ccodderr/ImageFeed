@@ -76,8 +76,9 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             preferredStyle: .alert
         )
         
-        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
+        let logOutAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
             ProfileLogoutService.shared.logout()
+            self?.dismiss(animated: true)
         }
         let closeAlertAction = UIAlertAction(title: "Нет", style: .cancel)
         

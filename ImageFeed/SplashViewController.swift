@@ -45,10 +45,12 @@ final class SplashViewController: UIViewController {
 
                 switch result {
                 case .success(let profile):
-                    ProfileImageService.shared.fetchProfileImage(
-                        username: profile.username,
-                        nil
-                    )
+                    if let username = profile.username {
+                        ProfileImageService.shared.fetchProfileImage(
+                            username: username,
+                            nil
+                        )
+                    }
                     
                     let tabBarController = TabBarController()
                     tabBarController.modalPresentationStyle = .fullScreen
