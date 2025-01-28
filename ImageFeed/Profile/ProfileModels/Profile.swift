@@ -11,6 +11,18 @@ struct Profile {
     let loginName: String
     let bio: String?
     
+    init(
+        username: String,
+        name: String,
+        loginName: String,
+        bio: String? = nil
+    ) {
+        self.username = username
+        self.name = name
+        self.loginName = loginName
+        self.bio = bio
+    }
+    
     init(from profileResult: ProfileDTO) {
         self.username = profileResult.username
         self.name = "\(profileResult.first_name) \(profileResult.last_name)"

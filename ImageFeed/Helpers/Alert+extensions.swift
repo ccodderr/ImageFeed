@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum AlertMessages: Error {
+enum AlertMessages: Error, LocalizedError {
     case likeError
     case networkError
     case unknownError

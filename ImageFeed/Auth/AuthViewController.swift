@@ -22,6 +22,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.accessibilityIdentifier = "AuthViewController"
         configureBackButton()
     }
     

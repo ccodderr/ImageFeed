@@ -9,6 +9,39 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>ImageFeedTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>ImageFeedUITests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>26776B672D4260CB00306B48</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26843D342CDB96CC0010F047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26843D4A2CDB96D20010F047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>26843D542CDB96D20010F047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>

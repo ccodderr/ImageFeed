@@ -8,19 +8,22 @@
 @testable import ImageFeed
 
 import Testing
+import ImageFeed
 import XCTest
 
 final class WebViewTests: XCTestCase {
     func testViewControllerCallsViewDidLoad() {
         //given
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "WebViewViewController") as! WebViewViewController
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle(for: WebViewViewController.self))
+        let viewController = storyboard.instantiateViewController(withIdentifier: "WebViewVC") as? WebViewViewController
+        XCTAssertNotNil(viewController, "Не удалось инициализировать WebViewViewController из сториборда")
+
         let presenter = WebViewPresenterSpy()
-        viewController.presenter = presenter
+        viewController?.presenter = presenter
         presenter.view = viewController
         
         //when
-        _ = viewController.view
+        _ = viewController?.view
         
         //then
         XCTAssertTrue(presenter.viewDidLoadCalled) //behaviour verification

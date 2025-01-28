@@ -100,6 +100,7 @@ private extension SingleImageViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
+        backButton.accessibilityIdentifier = "Navigation Back button"
         backButton.tintColor = .white
         navigationItem.leftBarButtonItem = backButton
     }

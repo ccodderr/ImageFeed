@@ -57,6 +57,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             for: .touchUpInside
         )
         button.tintColor = .ypRed
+        button.accessibilityIdentifier = "signOut"
         return button
     }()
     

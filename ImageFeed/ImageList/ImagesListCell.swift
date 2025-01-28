@@ -97,6 +97,9 @@ final class ImagesListCell: UITableViewCell {
     func setIsLiked(_ isLiked: Bool) {
         self.isLiked = isLiked
         button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
+        button.accessibilityIdentifier = isLiked
+        ? "like button active"
+        : "like button inactive"
     }
 }
 

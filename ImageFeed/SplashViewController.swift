@@ -27,6 +27,10 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "WebViewVC") as? WebViewViewController
+
+        print("viewController is nil=\(viewController == nil)")
         guard let token = storage.token, !token.isEmpty else {
             let authViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "authNavigationId")
             authViewController.modalPresentationStyle = .fullScreen
