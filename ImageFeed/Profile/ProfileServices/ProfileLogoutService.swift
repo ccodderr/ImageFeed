@@ -16,7 +16,6 @@ final class ProfileLogoutService {
     func logout() {
         cleanCookies()
         cleanData()
-        navigateToSplashScreen()
     }
     
     private func cleanCookies() {
@@ -36,22 +35,6 @@ final class ProfileLogoutService {
         ProfileImageService.shared.cleanData()
         ProfileService.shared.cleanData()
         OAuth2TokenStorage.shared.token = ""
-    }
-    
-    private func navigateToSplashScreen() {
-        guard let window = UIApplication.shared.windows.first else { return }
-        
-        let splashViewController = SplashViewController()
-        UIView
-            .transition(
-                with: window,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: {
-                    window.rootViewController = splashViewController
-                },
-                
-                completion: nil)
     }
 }
 

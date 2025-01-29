@@ -7,13 +7,28 @@
 
 import UIKit
 
-enum AlertMessages {
-    static let likeError = "Мы не смогли изменить статус лайка. Попробуйте еще раз!"
-    static let networkError = "Не удалось войти в систему."
-    static let unknownError = "Не удалось получить данные"
+enum AlertMessages: Error, LocalizedError {
+    case likeError
+    case networkError
+    case unknownError
+    
+    var errorDescription: String? {
+        switch self {
+        case .likeError:
+            return "Мы не смогли изменить статус лайка. Попробуйте еще раз!"
+        case .networkError:
+            return "Не удалось войти в систему."
+        case .unknownError:
+            return "Не удалось получить данные"
+        }
+    }
 }
 
 extension UIViewController {
+    func showErrorAlert(error: Error) {
+        showErrorAlert(message: error.localizedDescription)
+    }
+    
     func showErrorAlert(message: String) {
         let alert = UIAlertController(
             title: "Что-то пошло не так(",

@@ -76,9 +76,47 @@ final class ImagesListCell: UITableViewCell {
     
     func configCell(
         with indexPath: IndexPath,
-        image: Photo,
+        image: Photo?,
         maxWidth: CGFloat
     ) {
+        setImage(
+            for: image,
+            maxWidth: maxWidth,
+            indexPath: indexPath
+        )
+        
+        if let date = image?.createdAt {
+            dateLabel.text = dateFormatter.string(from: date)
+        } else {
+            dateLabel.text = "..."
+        }
+        setIsLiked(image?.isLiked ?? false)
+    }
+    
+    @objc private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        self.isLiked = isLiked
+        button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
+        button.accessibilityIdentifier = isLiked
+        ? "like button active"
+        : "like button inactive"
+    }
+}
+
+private extension ImagesListCell {
+    func setImage(
+        for image: Photo?,
+        maxWidth: CGFloat,
+        indexPath: IndexPath
+    ) {
+        guard let image = image else {
+            picture.image = UIImage(named: "placeholderImageList")
+            return
+        }
+        
         let size: CGSize = .init(
             width: maxWidth,
             height: getHeight(of: image, maxWidth: maxWidth)
@@ -101,25 +139,9 @@ final class ImagesListCell: UITableViewCell {
                 print("[ImageListCell] Failed to load image in cell. Error: \(error.localizedDescription).")
             }
         }
-        
-        if let date = image.createdAt {
-            dateLabel.text = dateFormatter.string(from: date)
-        } else {
-            dateLabel.text = "..."
-        }
-        setIsLiked(image.isLiked)
     }
     
-    func setIsLiked(_ isLiked: Bool) {
-        self.isLiked = isLiked
-        button.tintColor = isLiked ? UIColor.ypRed : .white.withAlphaComponent(0.5)
-    }
-    
-    @objc private func likeButtonClicked() {
-       delegate?.imageListCellDidTapLike(self)
-    }
-    
-    private func setupView() {
+    func setupView() {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         [picture, dateLabel, button].forEach {
@@ -145,7 +167,7 @@ final class ImagesListCell: UITableViewCell {
         )
     }
     
-    private func getHeight(of image: Photo, maxWidth: CGFloat) -> CGFloat {
+    func getHeight(of image: Photo, maxWidth: CGFloat) -> CGFloat {
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = maxWidth - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width

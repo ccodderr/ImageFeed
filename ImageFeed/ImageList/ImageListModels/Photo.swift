@@ -14,7 +14,7 @@ struct Photo: Equatable {
     let welcomeDescription: String?
     let thumbImageURL: URL?
     let largeImageURL: URL?
-    let isLiked: Bool
+    var isLiked: Bool
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
