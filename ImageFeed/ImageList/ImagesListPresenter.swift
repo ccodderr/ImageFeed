@@ -74,16 +74,15 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     func didTapLike(for indexPath: IndexPath) {
         let photo = photos[indexPath.row]
-        UIBlockingProgressHUD.show()
+        view?.showProgressHUD()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
             guard let self else { return }
+            view?.hideProgressHUD()
             switch result {
             case .success:
                 photos = imagesListService.photos
-                UIBlockingProgressHUD.dismiss()
                 self.view?.updateCellLike(with: indexPath, value: photos[indexPath.row].isLiked)
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 print("[didTapLike]: Failed to change like status")
                 self.view?.presentAlert(with: AlertMessages.likeError)
             }

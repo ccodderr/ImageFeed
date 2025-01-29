@@ -15,7 +15,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
-    private lazy var tokenStorage = OAuth2TokenStorage.shared
+    private let tokenStorage = OAuth2TokenStorage.shared
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -31,7 +31,7 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                print("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
             

@@ -17,7 +17,6 @@ final class ImageFeedUITests: XCTestCase {
         app.launch()
     }
     
-    @MainActor
     func testAuthorization() throws {
         sleep(5)
         app.buttons["AuthBtn"].tap()

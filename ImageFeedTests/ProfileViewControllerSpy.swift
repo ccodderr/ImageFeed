@@ -6,7 +6,6 @@
 //
 
 import ImageFeed
-import ObjectiveC
 import Foundation
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {

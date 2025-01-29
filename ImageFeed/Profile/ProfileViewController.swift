@@ -109,7 +109,8 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             loginNameLabel,
             descriptionLabel,
             logOutButton
-        ].forEach { view.addSubview($0)
+        ].forEach {
+            view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         

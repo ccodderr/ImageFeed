@@ -6,11 +6,9 @@
 //
 
 import ImageFeed
-import ObjectiveC
 import Foundation
 
 final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
-    
     var presenter: ImagesListPresenterProtocol?
     var updateTableViewAnimatedCalled = false
     var updateCellLikeCalled = false
@@ -27,4 +25,8 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
     func presentAlert(with error: Error) {
         presentAlertCalled = true
     }
+    
+    func showProgressHUD() {}
+    
+    func hideProgressHUD() {}
 }

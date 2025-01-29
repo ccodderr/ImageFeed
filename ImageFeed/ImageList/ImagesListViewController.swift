@@ -13,6 +13,8 @@ protocol ImagesListViewControllerProtocol: AnyObject {
     func updateTableViewAnimated(indexPaths: [IndexPath])
     func updateCellLike(with indexPath: IndexPath, value: Bool)
     func presentAlert(with error: Error)
+    func showProgressHUD()
+    func hideProgressHUD()
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -43,6 +45,14 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         tableView.performBatchUpdates {
             tableView.insertRows(at: indexPaths, with: .automatic)
         } completion: { _ in }
+    }
+    
+    func showProgressHUD() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideProgressHUD() {
+        UIBlockingProgressHUD.dismiss()
     }
     
     private func setupTableView() {
